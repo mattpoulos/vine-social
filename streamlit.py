@@ -119,11 +119,11 @@ Website content:
 """
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.5
-        )
-        return response.choices[0].message['content']
+    model="gpt-4",
+    messages=[{"role": "user", "content": prompt}],
+    temperature=0.5  
+)
+return response.choices[0].message["content"]
     except Exception as e:
         return f"Error summarizing website content: {e}"
 
@@ -204,11 +204,11 @@ Preferred Platform: {business_info['platform_preference']}
 """
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7
-        )
-        return response.choices[0].message['content']
+    model="gpt-4",
+    messages=[{"role": "user", "content": prompt}],
+    temperature=0.5  # or 0.7 for generate_post_idea
+)
+return response.choices[0].message["content"]
     except Exception as e:
         return f"Error generating post idea: {e}"
 
