@@ -39,9 +39,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-
 def save_to_google_sheets(data):
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -52,16 +49,7 @@ def save_to_google_sheets(data):
         sheet = client.open("VineSocial_Submissions").sheet1
 
         # Add data (append as new row)
-        sheet.append_row([
-            data.get("email", ""),
-            data.get("website_url", ""),
-            data.get("target_audience", ""),
-            data.get("brand_voice", ""),
-            data.get("special_offers", ""),
-            data.get("platform_preference", ""),
-            data.get("post_goal", "")
-        ])
-
+        sheet.append_row(data)
     except Exception as e:
         st.error(f"Error saving to Google Sheets: {e}")
 
@@ -83,7 +71,6 @@ with st.form("post_form"):
     email = st.text_input("What's your email!?")
     submitted = st.form_submit_button("Generate Post Idea") 
 
-
 # --- Random Success Messages ---
 success_messages = [
     "Voila! Your social media magic is ready! 🎉",
@@ -104,7 +91,7 @@ success_messages = [
 def scrape_website(url):
     try:
         headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            "User-Agent": "Mozilla/5.0"
         }
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
@@ -131,7 +118,7 @@ Website content:
 {raw_text}
 """
     try:
-        response = openai.Completion.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.5
@@ -216,7 +203,7 @@ Special Offers / News: {business_info['special_offers']}
 Preferred Platform: {business_info['platform_preference']}
 """
     try:
-        response = openai.Completion.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7
