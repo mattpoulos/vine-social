@@ -202,7 +202,7 @@ Special Offers / News: {business_info['special_offers']}
 Preferred Platform: {business_info['platform_preference']}
 """
     try:
-        response = openai.ChatCompletion.create(
+        response = openai.Completion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7
