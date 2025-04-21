@@ -42,7 +42,7 @@ st.markdown("""
 def save_to_google_sheets(data):
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds = ServiceAccountCredentials.from_json_keyfile_name("vinesocialoutput.json", scope)
+        creds = ServiceAccountCredentials.from_vinesocialoutput.json
         client = gspread.authorize(creds)
 
         # Open the spreadsheet by title
