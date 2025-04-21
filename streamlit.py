@@ -3,6 +3,9 @@ from bs4 import BeautifulSoup
 import openai
 import random
 import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
 
 # --- Streamlit Page Config ---
 st.set_page_config(page_title="Vine Social", page_icon="🍇", layout="centered")
@@ -36,6 +39,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# --- Google Sheets Setup ---
+def authenticate_google_sheets():
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds = ServiceAccountCredentials.from_json_keyfile_name('vinesocialoutput.json', scope)
+    client = gspread.authorize(creds)
+    return client
+
+def save_to_google_sheets(data):
+    client = authenticate_google_sheets()
+    sheet = client.open("VineSocial_Submissions").sheet1
+    sheet.append_row(data)
+
 # --- App Header ---
 st.title("Vine Social")
 st.markdown("Helping local businesses thrive with AI-powered social strategy.")
@@ -50,14 +65,15 @@ with st.form("post_form"):
     brand_voice = st.text_input("Describe your brand's personality (e.g., fun, warm, educational)")
     special_offers = st.text_input("Any promotions, events, or news to highlight?")
     platform_preference = st.text_input("Preferred social media platform (Instagram, TikTok, etc.)")
-    personal_goal = st.text_input("What is your goal for this post? (e.g. bookings, brand awareness, sales)")
+    post_goal = st.text_input("What is your goal for this post?")
+    email = st.text_input("Your email (to receive your result)")
     submitted = st.form_submit_button("Generate Post Idea")
 
 # --- Scrape Website ---
 def scrape_website(url):
     try:
         headers = {
-            "User-Agent": "Mozilla/5.0"
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
@@ -162,12 +178,11 @@ Business Summary:
 Campaign Insights:
 {random_campaign_insights}
 
-Goal: {business_info['business_goals']}
+Goal: {business_info['post_goal']}
 Target Audience: {business_info['target_audience']}
 Brand Voice: {business_info['brand_voice']}
 Special Offers / News: {business_info['special_offers']}
 Preferred Platform: {business_info['platform_preference']}
-User’s Personal Goal for This Post: {business_info['personal_goal']}
 """
     try:
         response = openai.ChatCompletion.create(
@@ -181,7 +196,7 @@ User’s Personal Goal for This Post: {business_info['personal_goal']}
 
 # --- Run Generation ---
 if submitted and website_url:
-    with st.spinner("Scraping website and generating idea..."):
+    with st.spinner("Generating your social media post idea..."):
         site_content = scrape_website(website_url)
 
         if "Error" in site_content:
@@ -191,17 +206,20 @@ if submitted and website_url:
             business_info = {
                 "target_audience": target_audience,
                 "brand_voice": brand_voice,
-                "business_goals": "Drive social media engagement",
+                "post_goal": post_goal,
                 "special_offers": special_offers,
                 "platform_preference": platform_preference,
-                "personal_goal": personal_goal,
             }
             post_idea = generate_post_idea(summary, business_info)
             st.success("✅ Here's your social media post idea:")
             st.markdown(f"**Business Summary:**\n{summary}")
-            st.markdown(f"**User’s Goal for This Post:** {personal_goal}")
             st.markdown("---")
             st.markdown(post_idea)
+
+            # Save to Google Sheets
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            data = [timestamp, website_url, target_audience, brand_voice, special_offers, platform_preference, post_goal, email]
+            save_to_google_sheets(data)
 
 # --- Footer ---
 st.markdown("---")
