@@ -39,17 +39,31 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- Google Sheets Setup ---
-def authenticate_google_sheets():
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = vinesocial-outputs@vinesocial-457522.iam.gserviceaccount.com.from_json_keyfile_name('vinesocialoutput.json', scope)
-    client = gspread.authorize(creds)
-    return client
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 def save_to_google_sheets(data):
-    client = authenticate_google_sheets()
-    sheet = client.open("VineSocial_Submissions").sheet1
-    sheet.append_row(data)
+    try:
+        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        creds = ServiceAccountCredentials.from_json_keyfile_name("vinesocialoutput.json", scope)
+        client = gspread.authorize(creds)
+
+        # Open the spreadsheet by title
+        sheet = client.open("VineSocial_Submissions").sheet1
+
+        # Add data (append as new row)
+        sheet.append_row([
+            data.get("email", ""),
+            data.get("website_url", ""),
+            data.get("target_audience", ""),
+            data.get("brand_voice", ""),
+            data.get("special_offers", ""),
+            data.get("platform_preference", ""),
+            data.get("post_goal", "")
+        ])
+
+    except Exception as e:
+        st.error(f"Error saving to Google Sheets: {e}")
 
 # --- App Header ---
 st.title("Vine Social")
