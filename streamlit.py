@@ -42,7 +42,7 @@ st.markdown("""
 # --- Google Sheets Setup ---
 def authenticate_google_sheets():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name('vinesocialoutput.json', scope)
+    creds = vinesocial-outputs@vinesocial-457522.iam.gserviceaccount.com.from_json_keyfile_name('vinesocialoutput.json', scope)
     client = gspread.authorize(creds)
     return client
 
