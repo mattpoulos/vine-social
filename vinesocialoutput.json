@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "vinesocial-457522",
+  "private_key_id": "19d026a013b94eee32cb2cd8623bba1776cef181",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC2b/Cc5N6XAfxM\nicKRcxfowXkG8Hjbf79llKnRK/r/12OpuxuSv+laNVeT6dDXwgDEPlN9XUX5Jj84\nsBu9edNdiYyuFL0R/9XIxYLbNEs4HmdP6c6OwgVus7KQedpai4X2+Dg6lQofM+UQ\n+yWn/f2aiAzb33OKtmnoWW1AlM26bYwfoVAHPWDhAet0U8N4mnMZSEYAEnYrRShC\nfdbdNqk8pr/5K8N1zysN8XKFTSIHQPmbJDetlnBmqFVnB3icEsvRkkUcJCybCn6W\ngAJB6vKNY3Ea/iuxdmG31D14M1KFeqGrNVvHXhBgk/8fKnNNsG5qajpwi5sdVZEV\nk2/gX07JAgMBAAECggEADzStjQAo+tRiKWV2i324rZBZpG3M3vuq8d4mGM51/1a+\nIm6bVdwLyLZnOCd9/gu4GWM5/XoVm9Z3oMOR7lUd/D77lCNbnmlQ0ej/dwKI7fKf\nyQn7asvqXL+ax562Z8NXDT6DXkOfmjnust+B9BpwBa4nBzj8xgAd++0fNWmpq4rz\ndhtAOF8/NfBsfBrpbMPowrFDnSfDRJob0+IQxalA3WOp3gRSDIb/IjFBqOKUI92d\nQXB7ZtUp21S5wGnpO+YThqFIHGIDZ7VLCTj/VPIci6b/AWFsGzqii5U8ao4RBo3p\ntL7bqV701aY6pfezGZbNjgur27v1XXdU+q4X+agUQQKBgQDul4vTOo5qv5W67LO8\nSw6hbJCGElPjMCFj1L40SCKuFhHvKtnGNQNxvWwPOqnUtHjNeUqoXmXGb8Jz/n6J\nSJb/0kqrAB8GW0d1V357RcbpvLWp2/ZFDbcvDnWqpd6HzuszL9j6kiZXMOn8u4Gr\nVNsrfsgVHiIGYXcZHF1W7zrqwQKBgQDDv4c702GHaxh6h6pEUW+OvsQSpqwGTqGr\noA712MreaMW+Vo6VgTAIfGMQvfhPXtmH1Dp/e6+1fObZXsF1yzM6celQUqX98JKG\nLzdls3LDk2TFaxmd7nsnMVCPhABS3vYyVuVkIdPBGgJNgaGkgpmzGfkrOcH7ub61\nLhQkPJaOCQKBgQDIS/0cZOouf4vJkvEIv9IWfjeN9lDqRvug/XZ4GZ7Tmr+Pkt+j\n39l2YNkYp9zvLlrD1HFyi1zRi/0ot5uu0HvDY90/VSi2g2aoAb2y608j5kJzyK8k\nJXGFVZQ+oGUCihk1rZNwN8VsKSol+5vOI7yi9RovcE6MIMKFGCTb2JYTgQKBgQCI\nRLHo9OtFMUnWKtFeQ+7MSYMHlN3WejDT4FXp0aTQldFrAqi57Tg6ABWa1xSgdGAs\nzZJ3ouwcBLpUAkHdNbsQ6bHJR+/kSvBF12LSOs0e12HkiP1JU3aKPytc7UCocCyl\nuJZyUZYvLGMD/8U+V+iVpPQvokKncZQQXuaIn2ETuQKBgEGwJc6gbjgZTBa2lpBW\nsOdyYkgj3XmZ8KtGRndYvLF0lNgoX9x14gcpQe5oh5zDrztUeX7sa1++KXWi6Y3P\n39mTty671VtboYqsVoCFvd/LapzyT/mUg55sy1EIceIL4DdotUOiGRaKTIiKRIx3\nRMK+XqjHYXrGE/58imRJGNrZ\n-----END PRIVATE KEY-----\n",
+  "client_email": "vinesocial-outputs@vinesocial-457522.iam.gserviceaccount.com",
+  "client_id": "110077376334876541333",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vinesocial-outputs%40vinesocial-457522.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
