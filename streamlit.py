@@ -117,7 +117,7 @@ Website content:
 {raw_text}
 """
     try:
-        response = openai.ChatCompletion.create(
+        response = openai.Completion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.5
