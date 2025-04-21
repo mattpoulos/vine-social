@@ -57,17 +57,34 @@ st.markdown("Helping local businesses thrive with AI-powered social strategy.")
 st.markdown("---")
 
 # --- Business Info Form ---
-st.subheader("Generate a Post Idea")
+st.subheader("Generate a Top Performing Post!")
 
 with st.form("post_form"):
-    website_url = st.text_input("Business Website URL")
+    website_url = st.text_input("Enter your website's URL!")
+    post_goal = st.text_input("What is your main goal for this post? (engagement, sales, etc.")
+    special_offers = st.text_input("Any promotions, events, or news to highlight?")
     target_audience = st.text_input("Describe your ideal local customer")
     brand_voice = st.text_input("Describe your brand's personality (e.g., fun, warm, educational)")
-    special_offers = st.text_input("Any promotions, events, or news to highlight?")
     platform_preference = st.text_input("Preferred social media platform (Instagram, TikTok, etc.)")
-    post_goal = st.text_input("What is your goal for this post?")
-    email = st.text_input("Your email (to receive your result)")
-    submitted = st.form_submit_button("Generate Post Idea")
+    email = st.text_input("What's your email!?")
+    submitted = st.form_submit_button("Generate Post Idea") 
+
+
+# --- Random Success Messages ---
+success_messages = [
+    "Voila! Your social media magic is ready! 🎉",
+    "Boom! Your post idea is crafted and ready to shine! ✨",
+    "Your post idea is served hot and fresh! 🔥",
+    "Success! Your post idea is now ready to roll out! 🚀",
+    "Bam! Your post idea is good to go! 👏",
+    "And just like that… the perfect post is born! 💡",
+    "Mission accomplished! Your post is ready to wow the world! 🌍",
+    "Tada! Your post idea is all set for social success! 💥",
+    "All done! Your post idea is now ready to steal the show! 🌟",
+    "Post idea complete and looking fabulous! 💅",
+    "Your social media strategy is complete—time to conquer the feed! 🏆",
+    "Your next viral post is just a click away! 💥"
+]
 
 # --- Scrape Website ---
 def scrape_website(url):
@@ -163,7 +180,7 @@ Based on the business summary and goals below, choose the most suitable campaign
 
 Then, create **one complete social media campaign post** that includes:
 1. Post Type — e.g. Instagram Reel, Carousel, Story, etc.
-2. A single Best Performing Visual — clearly described scene.
+2. A single Best Performing Visual — clearly described scene. That is quick and easy to capture.
 3. A full, scroll-stopping caption (max 250 characters).
 
 This must be:
@@ -211,7 +228,8 @@ if submitted and website_url:
                 "platform_preference": platform_preference,
             }
             post_idea = generate_post_idea(summary, business_info)
-            st.success("✅ Here's your social media post idea:")
+            random_success_message = random.choice(success_messages)
+            st.success(f"{random_success_message}")
             st.markdown(f"**Business Summary:**\n{summary}")
             st.markdown("---")
             st.markdown(post_idea)
