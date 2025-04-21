@@ -50,13 +50,14 @@ with st.form("post_form"):
     brand_voice = st.text_input("Describe your brand's personality (e.g., fun, warm, educational)")
     special_offers = st.text_input("Any promotions, events, or news to highlight?")
     platform_preference = st.text_input("Preferred social media platform (Instagram, TikTok, etc.)")
+    personal_goal = st.text_input("What is your goal for this post? (e.g. bookings, brand awareness, sales)")
     submitted = st.form_submit_button("Generate Post Idea")
 
 # --- Scrape Website ---
 def scrape_website(url):
     try:
         headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            "User-Agent": "Mozilla/5.0"
         }
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
@@ -166,6 +167,7 @@ Target Audience: {business_info['target_audience']}
 Brand Voice: {business_info['brand_voice']}
 Special Offers / News: {business_info['special_offers']}
 Preferred Platform: {business_info['platform_preference']}
+User’s Personal Goal for This Post: {business_info['personal_goal']}
 """
     try:
         response = openai.ChatCompletion.create(
@@ -192,10 +194,12 @@ if submitted and website_url:
                 "business_goals": "Drive social media engagement",
                 "special_offers": special_offers,
                 "platform_preference": platform_preference,
+                "personal_goal": personal_goal,
             }
             post_idea = generate_post_idea(summary, business_info)
             st.success("✅ Here's your social media post idea:")
             st.markdown(f"**Business Summary:**\n{summary}")
+            st.markdown(f"**User’s Goal for This Post:** {personal_goal}")
             st.markdown("---")
             st.markdown(post_idea)
 
