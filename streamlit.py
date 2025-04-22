@@ -1,8 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-import openai
+from openai import OpenAI
 import random
 import streamlit as st
+
+# --- OpenAI Client ---
+client = OpenAI()
 
 # --- Streamlit Page Config ---
 st.set_page_config(page_title="Vine Social", page_icon="🍇", layout="centered")
@@ -84,12 +87,12 @@ Website content:
 {raw_text}
 """
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.5
         )
-        return response.choices[0].message['content']
+        return response.choices[0].message.content
     except Exception as e:
         return f"Error summarizing website content: {e}"
 
@@ -170,12 +173,12 @@ Preferred Platform: {business_info['platform_preference']}
 User’s Personal Goal for This Post: {business_info['personal_goal']}
 """
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7
         )
-        return response.choices[0].message['content']
+        return response.choices[0].message.content
     except Exception as e:
         return f"Error generating post idea: {e}"
 
