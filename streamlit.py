@@ -87,7 +87,7 @@ Website content:
 {raw_text}
 """
     try:
-        response = client.chat.completions.create(
+        response = openai.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.5
@@ -173,7 +173,7 @@ Preferred Platform: {business_info['platform_preference']}
 User’s Personal Goal for This Post: {business_info['personal_goal']}
 """
     try:
-        response = client.chat.completions.create(
+        response = openai.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7
