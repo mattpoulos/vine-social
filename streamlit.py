@@ -7,6 +7,10 @@ import streamlit as st
 # --- OpenAI Client ---
 client = OpenAI()
 
+# Set your API key here
+openai.api_key = "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"
+
+
 # --- Streamlit Page Config ---
 st.set_page_config(page_title="Vine Social", page_icon="🍇", layout="centered")
 
