@@ -3,9 +3,6 @@ from bs4 import BeautifulSoup
 import openai
 import random
 import streamlit as st
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-from datetime import datetime
 
 # --- Streamlit Page Config ---
 st.set_page_config(page_title="Vine Social", page_icon="🍇", layout="centered")
@@ -39,62 +36,29 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- Save to Google Sheets ---
-def save_to_google_sheets(data):
-    try:
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds = ServiceAccountCredentials.from_json_keyfile_name("vinesocialoutput.json", scope)
-        client = gspread.authorize(creds)
-        sheet = client.open("VineSocial_Submissions").sheet1
-        sheet.append_row([
-            data.get("email", ""),
-            data.get("website_url", ""),
-            data.get("target_audience", ""),
-            data.get("brand_voice", ""),
-            data.get("special_offers", ""),
-            data.get("platform_preference", ""),
-            data.get("post_goal", "")
-        ])
-    except Exception as e:
-        st.error(f"Error saving to Google Sheets: {e}")
-
 # --- App Header ---
 st.title("Vine Social")
 st.markdown("Helping local businesses thrive with AI-powered social strategy.")
 st.markdown("---")
 
 # --- Business Info Form ---
-st.subheader("Generate a Top Performing Post!")
+st.subheader("Generate a Post Idea")
+
 with st.form("post_form"):
-    website_url = st.text_input("Enter your website's URL!")
-    post_goal = st.text_input("What is your main goal for this post? (engagement, sales, etc.)")
-    special_offers = st.text_input("Any promotions, events, or news to highlight?")
+    website_url = st.text_input("Business Website URL")
     target_audience = st.text_input("Describe your ideal local customer")
     brand_voice = st.text_input("Describe your brand's personality (e.g., fun, warm, educational)")
+    special_offers = st.text_input("Any promotions, events, or news to highlight?")
     platform_preference = st.text_input("Preferred social media platform (Instagram, TikTok, etc.)")
-    email = st.text_input("What's your email!?")
+    personal_goal = st.text_input("What is your goal for this post? (e.g. bookings, brand awareness, sales)")
     submitted = st.form_submit_button("Generate Post Idea")
-
-# --- Random Success Messages ---
-success_messages = [
-    "Voila! Your social media magic is ready! 🎉",
-    "Boom! Your post idea is crafted and ready to shine! ✨",
-    "Your post idea is served hot and fresh! 🔥",
-    "Success! Your post idea is now ready to roll out! 🚀",
-    "Bam! Your post idea is good to go! 👏",
-    "And just like that… the perfect post is born! 💡",
-    "Mission accomplished! Your post is ready to wow the world! 🌍",
-    "Tada! Your post idea is all set for social success! 💥",
-    "All done! Your post idea is now ready to steal the show! 🌟",
-    "Post idea complete and looking fabulous! 💅",
-    "Your social media strategy is complete—time to conquer the feed! 🏆",
-    "Your next viral post is just a click away! 💥"
-]
 
 # --- Scrape Website ---
 def scrape_website(url):
     try:
-        headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"}
+        headers = {
+            "User-Agent": "Mozilla/5.0"
+        }
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
@@ -125,7 +89,7 @@ Website content:
             messages=[{"role": "user", "content": prompt}],
             temperature=0.5
         )
-        return response.choices[0].message["content"]
+        return response.choices[0].message['content']
     except Exception as e:
         return f"Error summarizing website content: {e}"
 
@@ -149,7 +113,7 @@ campaign_insights = """
 - Flash sales or limited drops
 - Lifestyle flatlays with product tags
 
-🚰 Service-Based Businesses:
+🛠 Service-Based Businesses:
 - Time-lapse or before/after
 - Educational tips for locals
 - Local reviews / video testimonials
@@ -183,7 +147,7 @@ Based on the business summary and goals below, choose the most suitable campaign
 
 Then, create **one complete social media campaign post** that includes:
 1. Post Type — e.g. Instagram Reel, Carousel, Story, etc.
-2. A single Best Performing Visual — clearly described scene. That is quick and easy to capture.
+2. A single Best Performing Visual — clearly described scene.
 3. A full, scroll-stopping caption (max 250 characters).
 
 This must be:
@@ -198,11 +162,12 @@ Business Summary:
 Campaign Insights:
 {random_campaign_insights}
 
-Goal: {business_info['post_goal']}
+Goal: {business_info['business_goals']}
 Target Audience: {business_info['target_audience']}
 Brand Voice: {business_info['brand_voice']}
 Special Offers / News: {business_info['special_offers']}
 Preferred Platform: {business_info['platform_preference']}
+User’s Personal Goal for This Post: {business_info['personal_goal']}
 """
     try:
         response = openai.ChatCompletion.create(
@@ -210,14 +175,15 @@ Preferred Platform: {business_info['platform_preference']}
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7
         )
-        return response.choices[0].message["content"]
+        return response.choices[0].message['content']
     except Exception as e:
         return f"Error generating post idea: {e}"
 
 # --- Run Generation ---
 if submitted and website_url:
-    with st.spinner("Generating your social media post idea..."):
+    with st.spinner("Scraping website and generating idea..."):
         site_content = scrape_website(website_url)
+
         if "Error" in site_content:
             st.error(site_content)
         else:
@@ -225,29 +191,17 @@ if submitted and website_url:
             business_info = {
                 "target_audience": target_audience,
                 "brand_voice": brand_voice,
-                "post_goal": post_goal,
+                "business_goals": "Drive social media engagement",
                 "special_offers": special_offers,
                 "platform_preference": platform_preference,
+                "personal_goal": personal_goal,
             }
             post_idea = generate_post_idea(summary, business_info)
-            random_success_message = random.choice(success_messages)
-            st.success(f"{random_success_message}")
+            st.success("✅ Here's your social media post idea:")
             st.markdown(f"**Business Summary:**\n{summary}")
+            st.markdown(f"**User’s Goal for This Post:** {personal_goal}")
             st.markdown("---")
             st.markdown(post_idea)
-
-            # Save to Google Sheets
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            data = {
-                "email": email,
-                "website_url": website_url,
-                "target_audience": target_audience,
-                "brand_voice": brand_voice,
-                "special_offers": special_offers,
-                "platform_preference": platform_preference,
-                "post_goal": post_goal
-            }
-            save_to_google_sheets(data)
 
 # --- Footer ---
 st.markdown("---")
