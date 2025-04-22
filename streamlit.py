@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from openai import OpenAI
+import openai
 import random
 import streamlit as st
 
