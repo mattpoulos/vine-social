@@ -161,7 +161,7 @@ This must be:
 - Easy to use for a local business owner
 
 Business Summary:
-{summarized_website}
+{summarize_website_content}
 
 Campaign Insights:
 {random_campaign_insights}
